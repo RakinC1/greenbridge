@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GreenBridge | Food Rescue + Waste Reduction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="bg-orb orb-c"></div>
+
+    <div class="app-shell">
+      <header class="topbar panel">
+        <div>
+          <p class="eyebrow">AI-Powered Food Rescue Platform</p>
+          <h1>GreenBridge</h1>
+          <p class="subtitle">
+            Match surplus food from restaurants with shelters and food banks in
+            minutes.
+          </p>
+        </div>
+        <div class="topbar-actions">
+          <button id="seedDataBtn" class="btn secondary">Load Demo Data</button>
+          <button id="resetDataBtn" class="btn ghost">Reset Local Data</button>
+        </div>
+      </header>
+
+      <section class="hero-grid">
+        <article class="stat-card panel">
+          <p class="stat-label">Active Donations</p>
+          <p class="stat-value" id="activeDonationsValue">0</p>
+        </article>
+        <article class="stat-card panel">
+          <p class="stat-label">Meals Rescued</p>
+          <p class="stat-value" id="mealsRescuedValue">0</p>
+        </article>
+        <article class="stat-card panel">
+          <p class="stat-label">CO2 Saved</p>
+          <p class="stat-value" id="carbonSavedValue">0 kg</p>
+        </article>
+        <article class="stat-card panel">
+          <p class="stat-label">Water Saved</p>
+          <p class="stat-value" id="waterSavedValue">0 L</p>
+        </article>
+      </section>
+
+      <main class="content-grid">
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Restaurant Upload</h2>
+            <p>Post surplus meals for immediate pickup.</p>
+          </div>
+          <form id="uploadForm" class="stack-form">
+            <label>
+              Restaurant Name
+              <input
+                type="text"
+                id="restaurantName"
+                placeholder="e.g. Harbor Kitchen"
+                required
+              />
+            </label>
+            <label>
+              Surplus Food Item
+              <input
+                type="text"
+                id="foodType"
+                placeholder="e.g. Veggie wraps + soup"
+                required
+              />
+            </label>
+            <div class="form-row">
+              <label>
+                Servings
+                <input
+                  type="number"
+                  id="servings"
+                  min="1"
+                  max="1500"
+                  placeholder="40"
+                  required
+                />
+              </label>
+              <label>
+                Pickup By
+                <input type="datetime-local" id="pickupTime" required />
+              </label>
+            </div>
+            <label>
+              Pickup Location
+              <input
+                type="text"
+                id="location"
+                placeholder="Street address or district"
+                required
+              />
+            </label>
+            <label>
+              Notes (optional)
+              <textarea
+                id="notes"
+                rows="3"
+                placeholder="Allergy info, packaging, pickup instructions..."
+              ></textarea>
+            </label>
+            <button type="submit" class="btn primary">Publish Donation</button>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h2>Recipient Profile</h2>
+            <p>Use this name when claiming donations.</p>
+          </div>
+          <label>
+            Shelter / Food Bank Name
+            <input
+              id="recipientName"
+              type="text"
+              placeholder="e.g. Downtown Hope Shelter"
+            />
+          </label>
+          <div class="mini-stats">
+            <div>
+              <span>Total Listed Meals</span>
+              <strong id="listedMealsValue">0</strong>
+            </div>
+            <div>
+              <span>Rescue Rate</span>
+              <strong id="rescueRateValue">0%</strong>
+            </div>
+          </div>
+          <p class="helper-text">
+            Claiming a donation immediately updates climate impact metrics.
+          </p>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-heading">
+            <h2>Live Donation Feed</h2>
+            <p>Shelters and food banks can claim available items instantly.</p>
+          </div>
+          <div class="feed-controls">
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search by restaurant, food type, or location..."
+            />
+            <select id="statusFilter">
+              <option value="all">All Statuses</option>
+              <option value="available">Available</option>
+              <option value="claimed">Claimed</option>
+            </select>
+          </div>
+          <div id="listingGrid" class="listing-grid"></div>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-heading">
+            <h2>AI Waste Prediction (Gemini)</h2>
+            <p>
+              Forecast likely waste hotspots and recommended interventions using
+              live donation data.
+            </p>
+          </div>
+
+          <div class="ai-toolbar">
+            <label class="api-key-label">
+              Gemini API Key
+              <input
+                type="password"
+                id="apiKeyInput"
+                placeholder="Paste key from Google AI Studio"
+              />
+            </label>
+            <button id="saveApiKeyBtn" class="btn secondary">
+              Save Key Locally
+            </button>
+          </div>
+
+          <div class="ai-toolbar">
+            <label class="focus-label">
+              Focus Area (optional)
+              <input
+                id="focusAreaInput"
+                type="text"
+                placeholder="e.g. Downtown + East Side"
+              />
+            </label>
+            <button id="runPredictionBtn" class="btn primary">
+              Run Gemini Forecast
+            </button>
+          </div>
+
+          <p class="helper-text" id="aiStatusText">
+            Connect your Gemini key to generate predictions.
+          </p>
+          <pre id="aiOutput" class="ai-output">
+No AI forecast yet. Click "Run Gemini Forecast" to generate hotspot predictions and operational recommendations.
+          </pre>
+        </section>
+
+        <section class="panel wide">
+          <div class="section-heading">
+            <h2>Impact Timeline</h2>
+            <p>Track claimed donations and measured sustainability gains.</p>
+          </div>
+          <ul id="claimTimeline" class="timeline"></ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
